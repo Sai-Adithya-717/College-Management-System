@@ -1,0 +1,62 @@
+
+-- Altering Tables
+
+ALTER TABLE departments
+  ADD CONSTRAINT hod_id PRIMARY KEY (id)
+
+ALTER TABLE faculty
+  ADD CONSTRAINT id PRIMARY KEY (id),
+
+ALTER TABLE students
+  ADD CONSTRAINT student_roll_num PRIMARY KEY (`roll_num`),
+
+ALTER TABLE [dbo].[subjects] ADD  DEFAULT ((1)) FOR [faculty_id]
+
+ALTER TABLE [dbo].[subjects] ADD  CONSTRAINT [subject_department_id] FOREIGN KEY([department_id])
+REFERENCES [dbo].[departments] ([id])
+
+ALTER TABLE [dbo].[subjects] CHECK CONSTRAINT [subject_department_id]
+
+ALTER TABLE [dbo].[subjects] ADD  CONSTRAINT [subject_faculty_id] FOREIGN KEY([faculty_id])
+REFERENCES [dbo].[faculty] ([id])
+
+ALTER TABLE [dbo].[subjects] CHECK CONSTRAINT [subject_faculty_id]
+
+ALTER TABLE [dbo].[students] ADD  DEFAULT (NULL) FOR [department_id]
+
+ALTER TABLE [dbo].[students] ADD  DEFAULT (NULL) FOR [phone]
+
+ALTER TABLE [dbo].[students] ADD  CONSTRAINT [student_department_id] FOREIGN KEY([department_id])
+REFERENCES [dbo].[departments] ([id])
+
+ALTER TABLE [dbo].[students] CHECK CONSTRAINT [student_department_id]
+
+ALTER TABLE [dbo].[marks] ADD  DEFAULT ((1)) FOR [student_roll_num]
+
+ALTER TABLE [dbo].[marks] ADD  DEFAULT ((1)) FOR [subject_id]
+
+ALTER TABLE [dbo].[marks] ADD  CONSTRAINT [marks_student_roll_num] FOREIGN KEY([student_roll_num])
+REFERENCES [dbo].[students] ([roll_num])
+
+ALTER TABLE [dbo].[marks] CHECK CONSTRAINT [marks_student_roll_num]
+
+ALTER TABLE [dbo].[marks] ADD  CONSTRAINT [marks_subject_id] FOREIGN KEY([subject_id])
+REFERENCES [dbo].[subjects] ([id])
+
+
+ALTER TABLE [dbo].[marks] CHECK CONSTRAINT [marks_subject_id]
+
+ALTER TABLE [dbo].[faculty] ADD  DEFAULT (NULL) FOR [phone]
+
+ALTER TABLE [dbo].[faculty] ADD  CONSTRAINT [faculty_department_id] FOREIGN KEY([department_id])
+REFERENCES [dbo].[departments] ([id])
+
+ALTER TABLE [dbo].[faculty] CHECK CONSTRAINT [faculty_department_id]
+
+ALTER TABLE [dbo].[departments] ADD  DEFAULT (NULL) FOR [hod_id]
+
+ALTER TABLE [dbo].[departments] ADD  CONSTRAINT [department_hod_id] FOREIGN KEY([hod_id])
+REFERENCES [dbo].[faculty] ([id])
+
+ALTER TABLE [dbo].[departments]  WITH CHECK ADD  CONSTRAINT [department_hod_id] FOREIGN KEY([hod_id])
+REFERENCES [dbo].[faculty] ([id])
